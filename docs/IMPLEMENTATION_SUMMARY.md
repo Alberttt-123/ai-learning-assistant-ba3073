@@ -30,8 +30,9 @@ repository artifacts carry the behavior.
   tests: 15 passed. npm audit after compatible fixes: zero known vulnerabilities.
 - Local Docker runtime and real Qwen connectivity are verified. ACR delivery
   and ECS digest-pinned startup, real HTML/PDF generation, and container
-  recreation persistence are verified. Public-IP access evidence and final
-  HTTPS/domain evidence are still pending; see the dated QA report.
+  recreation persistence are verified. Laptop public-IP HTTP/authenticated
+  artifact checks and the required on-ECS public-IP log pass. Native address-bar
+  screenshots and final HTTPS/domain evidence remain pending; see the QA report.
 
 - The phase-1 implementation queue (tasks 000–023) was completed on 2026-06-03 and
   moved into whole-product QA.

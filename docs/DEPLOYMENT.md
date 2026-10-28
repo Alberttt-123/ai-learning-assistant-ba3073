@@ -119,6 +119,13 @@ project name. Set `AILA_COMPOSE_FILE` if using another deployment file.
 Retrieve `ecs-docker-check.txt` from ECS. A check
 from ECS and a browser check from the laptop are separate pieces of evidence.
 
+If the laptop can reach the UI but the ECS self-check of its public IP times
+out, inspect the source restrictions. The instance's request is not sourced
+from the student's laptop. A temporary TCP 14242 rule for the ECS's own public
+IPv4 `/32` may be needed for that specific self-check. Collect the real log,
+then remove that temporary self-check rule and retain the student's `/32` rule.
+Do not replace narrow source rules with `0.0.0.0/0` to make a check pass.
+
 ## Domain purchase and the mainland hosting prerequisite
 
 First establish whether a suitable domain/subdomain is already available.
