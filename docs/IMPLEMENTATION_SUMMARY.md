@@ -28,10 +28,10 @@ repository artifacts carry the behavior.
 - Updated vulnerable frontend dependencies within their supported major versions
   and rebuilt the supplied static bundle. Backend tests: 121 passed. Frontend
   tests: 15 passed. npm audit after compatible fixes: zero known vulnerabilities.
-- Local Docker runtime and real Qwen connectivity are verified. Cloud ACR
-  delivery, public-IP evidence, and the final HTTPS/domain evidence must be
-  recorded separately when those resources are available; they are not implied
-  by this preparation ledger.
+- Local Docker runtime and real Qwen connectivity are verified. ACR delivery
+  and ECS digest-pinned startup, real HTML/PDF generation, and container
+  recreation persistence are verified. Public-IP access evidence and final
+  HTTPS/domain evidence are still pending; see the dated QA report.
 
 - The phase-1 implementation queue (tasks 000–023) was completed on 2026-06-03 and
   moved into whole-product QA.

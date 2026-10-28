@@ -54,14 +54,17 @@ In local PowerShell, replace the placeholder with the complete address:
 
 ```powershell
 $env:AILA_IMAGE = 'YOUR_REGISTRY/YOUR_NAMESPACE/ai-learning-assistant:ba3073'
-docker build --platform linux/amd64 -t $env:AILA_IMAGE .
+docker buildx build --platform linux/amd64 --provenance=false --sbom=false --load -t $env:AILA_IMAGE .
 docker push $env:AILA_IMAGE
 docker image inspect $env:AILA_IMAGE --format '{{.Os}}/{{.Architecture}} {{json .RepoDigests}}'
 ```
 
 This matches an x86_64 ECS. An ARM ECS requires an ARM image and a corresponding
 Compose platform change. Record the real pushed digest; do not infer it from
-an earlier local build. ACR personal edition is intended for learning/testing;
+an earlier local build. The explicit provenance/SBOM flags avoid the OCI empty
+attestation manifest rejected by the tested ACR personal registry; they do not
+disable application authentication, HTTPS, or model-key protection.
+ACR personal edition is intended for learning/testing;
 eligibility and free limits are subject to the console.
 
 ## ECS deployment and Task 2 evidence
