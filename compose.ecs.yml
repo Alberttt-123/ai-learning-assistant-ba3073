@@ -1,0 +1,36 @@
+# Run from the project root: docker compose -f compose.ecs.yml ...
+# AILA_IMAGE is the complete ACR image reference, preferably pinned by digest.
+services:
+  backend:
+    image: ${AILA_IMAGE:?Set AILA_IMAGE to the image pushed to your ACR repository}
+    platform: linux/amd64
+    restart: unless-stopped
+    init: true
+    ports:
+      # Task 2 only: set AILA_BIND_ADDRESS=0.0.0.0 and restrict SG to your IP /32.
+      # Task 3: return to 127.0.0.1 and remove the public 14242 SG rule.
+      - "${AILA_BIND_ADDRESS:-127.0.0.1}:14242:14242"
+    environment:
+      APP_SQLITE_PATH: /app/data/app.sqlite
+      WORKSPACE_ROOT: /app/workspace
+      MODEL_PROVIDER: openai_compatible
+      MODEL_BASE_URL: ${MODEL_BASE_URL:-https://dashscope.aliyuncs.com/compatible-mode/v1}
+      MODEL_NAME: ${MODEL_NAME:-qwen3.6-flash}
+      MODEL_CONTEXT_WINDOW: ${MODEL_CONTEXT_WINDOW:-1000000}
+      MODEL_SUPPORTS_STREAMING: "true"
+      MODEL_SECRET_FILE: /app/data/model-secrets.env
+      MODEL_KEY_ENCRYPTION_FILE: /app/data/model-key-encryption.key
+    volumes:
+      - ./data:/app/data
+      - ./workspace:/app/workspace
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:14242/health', timeout=2).read()"]
+      interval: 10s
+      timeout: 3s
+      retries: 12
+      start_period: 10s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"

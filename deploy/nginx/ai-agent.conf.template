@@ -1,0 +1,36 @@
+# Final HTTPS site. Replace __DOMAIN__; keep the application's backend on loopback.
+# Install as /etc/nginx/sites-available/ai-agent after obtaining the certificate.
+server {
+    listen 80;
+    server_name __DOMAIN__;
+    location /.well-known/acme-challenge/ { root /var/www/certbot; }
+    location / { return 308 https://$host$request_uri; }
+}
+
+server {
+    listen 443 ssl;
+    server_name __DOMAIN__;
+    ssl_certificate /etc/letsencrypt/live/__DOMAIN__/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/__DOMAIN__/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    auth_basic "BA3073 Learning Assistant";
+    auth_basic_user_file /etc/nginx/ai-agent.htpasswd;
+    client_max_body_size 30m;
+    add_header X-Content-Type-Options nosniff always;
+
+    location /ui/ {
+        # The browser keeps Basic Authorization; application sessions use their
+        # separate header. The backend continues to see its usual Bearer header.
+        proxy_pass http://127.0.0.1:14242;
+        include /etc/nginx/snippets/ai-agent-proxy.conf;
+        proxy_set_header Accept-Encoding "";
+        sub_filter '<head>' '<head><meta name="aila-session-header" content="X-App-Authorization">';
+        sub_filter_once on;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:14242;
+        include /etc/nginx/snippets/ai-agent-proxy.conf;
+    }
+}
