@@ -14,7 +14,7 @@ repository artifacts carry the behavior.
 
 ## Completion Basis
 
-### BA3073 deployment preparation 2026-10-28
+### BA3073 deployment completion 2026-10-28 to 2026-10-29
 
 - Revised the essay prompt for the assignment's three tasks, page limit,
   evidence integrity, screenshots, technical explanations, and security/costs.
@@ -33,7 +33,15 @@ repository artifacts carry the behavior.
   recreation persistence are verified. Laptop public-IP HTTP/authenticated
   artifact checks and the required on-ECS public-IP log pass. Local and ECS native
   address-bar screenshots were supplied and incorporated locally into the
-  inspected seven-page draft. Final HTTPS/domain evidence remains pending.
+  inspected report.
+- A separate Hong Kong ECS runs the same ACR digest for Task 3 at
+  `https://www.albert112.work/ui/`. Trusted TLS, independent Basic authentication,
+  application login, real Qwen PDF generation, original-session/PDF persistence
+  after recreation, and certificate renewal rehearsal all pass. The owner
+  supplied the original HTTPS address-bar screenshot. The original Hangzhou
+  service is now loopback-only; the owner confirmed temporary 14242 cloud rules
+  were deleted. The final nine-page report includes all three screenshots and
+  passed complete visual review. See the dated HTTPS QA record for evidence.
 
 - The phase-1 implementation queue (tasks 000–023) was completed on 2026-06-03 and
   moved into whole-product QA.
@@ -163,7 +171,7 @@ Driven by ADR 009. Replaced LaTeX (TeX Live + latexmk) with Playwright HTML-to-P
   may need to change the base URL.
 - The concrete web-search provider and its rate/cost limits remain undecided. The
   adapter boundary is ready.
-- Native no-Docker packaging, signed macOS distribution, and hosted deployment are
-  future work.
+- Native no-Docker packaging, signed macOS distribution, and production-scale
+  hosted operations are future work; the BA3073 teaching cloud deployment is verified.
 - Real model-provider smoke tests require untracked credentials. Automated tests
   use the mock provider.
