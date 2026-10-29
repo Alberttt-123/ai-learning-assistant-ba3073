@@ -148,6 +148,14 @@ domain/subdomain or hosting arrangement. Do not claim HTTPS completion while
 filing or the domain remains pending. A different hosting region would require
 reviewing its costs and applicable requirements before creating new resources.
 
+The verified October 2026 deployment used a separate Hong Kong trial ECS for
+Task 3 after the original usage-billed Hangzhou trial failed the filing-server
+eligibility check. Check the account's actual regional trial eligibility,
+hourly allowance, total remaining credit and egress allowance before creating
+another instance. Multiple trial instances consume the same credit pool;
+the displayed lifetime for one instance is not the lifetime of both together.
+Keep Task 2's genuine earlier evidence and document the different Task 3 host.
+
 Once the domain is ready, add an A record with a host such as `ai`, pointing to
 the chosen ECS public IPv4. Use a domain you control. A generic IP-to-domain
 mapping service is not evidence of controlling a domain.
@@ -209,6 +217,16 @@ bash scripts/check-https.sh YOUR_REAL_DOMAIN /path/to/private.netrc
 sudo certbot renew --dry-run
 systemctl list-timers | grep certbot
 ```
+
+Use LF line endings for a netrc file transferred from Windows. The tested
+Ubuntu curl rejected the password from a CRLF file even though explicit Basic
+authorization and the password hash verified correctly. Do not print either
+form of the credential while diagnosing an authentication failure.
+
+If using `certbot certonly --webroot` instead of its Nginx installer, serve the
+ACME challenge directory on port 80, and configure a renewal deploy hook that
+runs `nginx -t` and reloads Nginx. Certificate files updating on disk alone do
+not make existing Nginx workers load the renewed certificate.
 
 Keep credentials out of screenshots, shell histories, report excerpts, and Git.
 Back up SQLite and workspace consistently, and back up the encryption master
